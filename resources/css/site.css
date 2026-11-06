@@ -1,0 +1,292 @@
+@import 'tailwindcss';
+
+@source '../views';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Fraunces', ui-serif, Georgia, serif;
+
+    --color-ink: #0e1a2b;
+    --color-ink-soft: #2a3a52;
+    --color-cream: #fbf7f1;
+    --color-sand: #f1e9dc;
+    --color-tulip: #c62f3a;
+    --color-tulip-dark: #a5232e;
+    --color-leaf: #3f6b2e;
+    --color-gold: #e0a93b;
+
+    --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --animate-kenburns: kenburns 14s ease-out forwards;
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-marquee: marquee 40s linear infinite;
+
+    @keyframes kenburns {
+        from {
+            transform: scale(1.12);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    @keyframes marquee {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+    body {
+        @apply bg-cream font-sans text-ink antialiased;
+    }
+    ::selection {
+        background: var(--color-tulip);
+        color: white;
+    }
+    :focus-visible {
+        outline: 2px solid var(--color-tulip);
+        outline-offset: 3px;
+        border-radius: 6px;
+    }
+}
+
+@layer components {
+    .container-site {
+        @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+    }
+    .eyebrow {
+        @apply text-tulip inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase;
+    }
+    .eyebrow::before {
+        content: '';
+        @apply bg-tulip h-px w-8;
+    }
+    .display {
+        @apply font-display tracking-tight;
+        font-variation-settings: 'SOFT' 50;
+    }
+    .btn {
+        @apply ease-smooth inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition duration-300;
+    }
+    .btn-primary {
+        @apply bg-tulip hover:bg-tulip-dark text-white shadow-lg shadow-red-900/20 hover:-translate-y-0.5;
+    }
+    .btn-ghost {
+        @apply border border-white/40 text-white backdrop-blur hover:bg-white hover:text-ink;
+    }
+}
+
+/* Scroll reveal — only hidden when JS is running so content never disappears. */
+.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 0.9s var(--ease-smooth),
+        transform 0.9s var(--ease-smooth);
+    transition-delay: var(--delay, 0ms);
+}
+.js [data-reveal='left'] {
+    transform: translateX(-36px);
+}
+.js [data-reveal='scale'] {
+    transform: scale(0.94);
+}
+.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Hero headline word reveal */
+.hero-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.18em;
+    margin-bottom: -0.18em;
+}
+.hero-word > span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: word-up 1s var(--ease-smooth) forwards;
+    animation-delay: calc(var(--i) * 90ms + 200ms);
+}
+@keyframes word-up {
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Hero slides */
+.hero-slide {
+    opacity: 0;
+    transition: opacity 1.6s ease;
+}
+.hero-slide.is-active {
+    opacity: 1;
+}
+.hero-slide.is-active img {
+    animation: var(--animate-kenburns);
+}
+
+/* Route line draw */
+.route-line {
+    stroke-dasharray: 6 10;
+    animation: dash 30s linear infinite;
+}
+@keyframes dash {
+    to {
+        stroke-dashoffset: -600;
+    }
+}
+
+.no-scrollbar {
+    scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    .js [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .hero-word > span {
+        transform: none;
+        animation: none;
+    }
+    .hero-slide.is-active img,
+    .route-line,
+    .animate-float,
+    .animate-marquee {
+        animation: none;
+    }
+}
+
+/* Long-form article typography for database-driven HTML */
+.prose-site {
+    @apply text-ink/80 text-[1.0625rem] leading-[1.8];
+}
+.prose-site > * + * {
+    @apply mt-5;
+}
+.prose-site h2,
+.prose-site h3,
+.prose-site h4 {
+    @apply font-display text-ink mt-10 font-semibold tracking-tight;
+}
+.prose-site h2 {
+    @apply text-3xl;
+}
+.prose-site h3 {
+    @apply text-2xl;
+}
+.prose-site h4 {
+    @apply text-xl;
+}
+.prose-site a {
+    @apply text-tulip decoration-tulip/30 hover:decoration-tulip underline underline-offset-4 transition;
+}
+.prose-site strong {
+    @apply text-ink font-semibold;
+}
+.prose-site ul,
+.prose-site ol {
+    @apply space-y-2 pl-6;
+}
+.prose-site ul {
+    @apply list-disc;
+}
+.prose-site ol {
+    @apply list-decimal;
+}
+.prose-site li::marker {
+    @apply text-tulip font-semibold;
+}
+.prose-site li > p {
+    @apply my-0;
+}
+.prose-site img {
+    @apply my-8 h-auto max-w-full rounded-2xl shadow-lg shadow-ink/10;
+}
+.prose-site table {
+    @apply w-full border-collapse text-sm;
+}
+.prose-site th,
+.prose-site td {
+    @apply border-ink/10 border px-3 py-2 text-left;
+}
+.prose-site blockquote {
+    @apply border-tulip bg-sand/70 rounded-r-2xl border-l-4 px-5 py-3 italic;
+}
+.prose-site > p:first-of-type::first-letter {
+    @apply font-display text-tulip float-left mt-1 mr-3 text-6xl leading-[0.8] font-semibold;
+}
+.prose-site > h2:first-child,
+.prose-site > h3:first-child {
+    @apply mt-0;
+}
+.prose-site::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/* Short text blocks: no drop cap, tighter size */
+.prose-site.prose-plain {
+    @apply text-base leading-relaxed;
+}
+.prose-site.prose-plain > p:first-of-type::first-letter {
+    all: unset;
+}
+
+/* Scrollspy pills */
+.spy-link[data-active] {
+    @apply bg-ink text-white;
+}
+
+/* Hotel names that open a tracked hotel search */
+.prose-site a[data-hotel] {
+    @apply font-semibold;
+}
+.prose-site a[data-hotel]::after {
+    content: 'Cek harga ↗';
+    @apply bg-tulip/10 text-tulip ml-1.5 inline-block rounded-full px-2 py-0.5 align-middle text-[0.65rem] leading-none font-semibold tracking-wide no-underline;
+}
+.prose-site a[data-hotel]:hover::after {
+    @apply bg-tulip text-white;
+}
+
+/* Partner widgets: hide the loading skeleton once the script has injected content. */
+.widget-frame:has(> .relative > :not(script)) > .widget-skeleton {
+    display: none;
+}
+.widget-frame > .relative {
+    z-index: 1;
+}
+
+/* Travelpayouts flights widget: it is a <tp-cascoon> custom element whose shadow :host caps it at 749px.
+   Page styles outrank :host rules, so override the element itself. */
+tp-cascoon {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+}
