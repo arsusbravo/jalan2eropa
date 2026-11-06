@@ -22,6 +22,16 @@
         @fonts
         @vite(['resources/css/site.css', 'resources/js/site.js'])
         @stack('head')
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBVH1TPW7E"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-YBVH1TPW7E');
+        </script>
     </head>
     <body class="min-h-screen">
         <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2">Lewati ke konten</a>
