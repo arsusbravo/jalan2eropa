@@ -46,11 +46,13 @@ class Affiliate extends Model
     /**
      * Programs that serve the given category (tour, hotel, transfer, car, esim, flight, luggage, ...).
      *
+     * Categories are stored as JSON text (no JSON column type, for MySQL 5 servers), so match the quoted slug.
+     *
      * @param  Builder<Affiliate>  $query
      */
     public function scopeForCategory(Builder $query, string $category): void
     {
-        $query->whereJsonContains('categories', $category);
+        $query->where('categories', 'like', '%'.json_encode($category).'%');
     }
 
     /**

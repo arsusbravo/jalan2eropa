@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('affiliates', function (Blueprint $table) {
-            $table->json('categories')->nullable()->after('slug');
+            $table->text('categories')->nullable()->after('slug');
             $table->text('search_template')->nullable()->after('url');
             $table->text('hotel_search_template')->nullable()->after('search_template');
             $table->string('description')->nullable()->after('hotel_search_template');
